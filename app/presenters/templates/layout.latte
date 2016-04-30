@@ -17,6 +17,9 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	{block head}{/block}
 	<link rel="stylesheet" href="{$basePath}/css/layout.css">
+        
+        <script src="{$basePath}/js/nette.ajax.js"></script>
+        <script src="{$basePath}/js/main.js"></script>
 </head>
 
     <body>
@@ -58,12 +61,12 @@
             <!-- ?php $this->container->httpResponse->setCookie("uri", $_SERVER['REQUEST_URI'], time()+5)? -->
             <!-- ?php echo ($this) ? -->
             
-            <a href="/Login/Index/">
+            <a href="/Login/Index/" class="ajax">
                 <span class="glyphicon glyphicon-log-out"></span>&nbsp&nbspLogout
             </a>
             
         {else}
-            <a href="#" class = "preventDefault">
+            <a n:href="Sign:form" class="preventDefault ajax">
                 <span class="glyphicon glyphicon-log-in"></span>&nbsp&nbspLogin
             </a>
         {/if}

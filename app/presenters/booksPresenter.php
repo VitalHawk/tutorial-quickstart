@@ -5,7 +5,7 @@ namespace App\Presenters;
 use Nette;
 use Nette\Application\UI\Form;
 
-class booksPresenter extends BasePresenter
+class BooksPresenter extends BasePresenter
 {
 	/** @var Nette\Database\Context */
 	private $database;
@@ -43,8 +43,18 @@ class booksPresenter extends BasePresenter
                     $sel = $sel->where('publisher_id', $this->pubsId);
                 }
                 
-                $this->template->books = $sel->fetchAll();
-                //var_dump($this->template->books);
+                $books = array();
+                foreach ($sel as $book) {
+//                    $b = new Nette\Utils\ObjectMixin();
+//                    $b->publisher = $book->ref('Publishers', 'publisher_id')->name;
+                    //$book->publisher = 
+                    \Tracy\Debugger::barDump($book->ref('Publishers', 'publisher_id')->name);
+                    $books[] = $book;
+                }
+                //$this->template->books = $sel->fetchAll();
+                $this->template->books = $books;
+                \Tracy\Debugger::barDump($this->template->books);
+                
             } else {
                 $this->template->books = 
                     $this->database->query('call sp_getAllBooks()')->fetchAll();
@@ -106,7 +116,11 @@ class booksPresenter extends BasePresenter
                             ->setPrompt('-- Select publisher --')
                             ->setValue($this->pubsId);
             // $form->setMethod('post');
-            $form->addSubmit('filter', 'Refresh');
+            $form->addSubmit('filter', 'Refresh')->getControlPrototype()->addClass("btn btn-info btn-md");
+//          $form->addSubmit('filter', 'Refresh')
+//                    ->setAttribute('class', 'btn btn-info btn-md');
+                    
+            
             $form->onSuccess[] = array($this, 'filterBooksSucceeded');
             $form->addGroup();
             
@@ -115,11 +129,12 @@ class booksPresenter extends BasePresenter
             $renderer->wrappers['label']['container'] = 'span';
             $renderer->wrappers['control']['container'] = 'span';
             $renderer->wrappers['pair']['container'] = NULL;
-            foreach($form->getControls() as $key => $value)
-            {
-                if ($value instanceof Nette\Forms\Controls\SubmitButton)
-                    $value->getControlPrototype()->addClass("btn btn-info btn-md");
-            }
+            
+//            foreach($form->getControls() as $key => $value)
+//            {
+//                if ($value instanceof Nette\Forms\Controls\SubmitButton)
+//                    $value->getControlPrototype()->addClass("btn btn-info btn-md");
+//            }
             
             
             return $form;
