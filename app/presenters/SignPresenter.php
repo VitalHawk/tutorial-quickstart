@@ -4,7 +4,7 @@ namespace App\Presenters;
 
 use Nette;
 use App\Forms\SignFormFactory;
-
+use Tracy\Debugger;
 
 class SignPresenter extends BasePresenter
 {
@@ -32,9 +32,10 @@ class SignPresenter extends BasePresenter
 		$this->redirect('Homepage:');
 	}
         
-        public function handleForm()
+        public function actionForm()
         {
             if ($this->isAjax()) {
+                $this->template->param = "handleForm xxx";
                 $this->redrawControl('login');
             }
         }
