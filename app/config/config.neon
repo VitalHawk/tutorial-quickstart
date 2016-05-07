@@ -21,7 +21,7 @@ session:
 
 security:
 	users:
-		admin: secret  # user 'admin', password 'secret'
+		'admin@admin.cz': 123  # user 'admin@admin.cz', password '123'
 
 
 services:

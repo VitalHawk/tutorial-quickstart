@@ -49,12 +49,10 @@ class BooksPresenter extends BasePresenter
 //                    $b = new Nette\Utils\ObjectMixin();
 //                    $b->publisher = $book->ref('Publishers', 'publisher_id')->name;
                     //$book->publisher = 
-                    Debugger::barDump($book->ref('Publishers', 'publisher_id')->name);
                     $books[] = $book;
                 }
                 //$this->template->books = $sel->fetchAll();
                 $this->template->books = $books;
-                Debugger::barDump($this->template->books);
                 
             } else {
                 $this->template->books = 
@@ -75,8 +73,9 @@ class BooksPresenter extends BasePresenter
                 require_once DIR_INC . 'router.php';
 
 //                $this->getHttpResponse()->setCookie("uri", $_SERVER['REQUEST_URI'], time()+5);
-                
+
                 $this->initTemplate();
+                
             }
             catch(Exception $ex) {
                 echo 'Error!!!' . $ex;
@@ -116,10 +115,9 @@ class BooksPresenter extends BasePresenter
                             ->setPrompt('-- Select publisher --')
                             ->setValue($this->pubsId);
             // $form->setMethod('post');
-            $form->addSubmit('filter', 'Refresh')->getControlPrototype()->addClass("btn btn-info btn-md"); // ajax");
+            $form->addSubmit('filter', 'Refresh')->getControlPrototype()->addClass("btn btn-info btn-md ajax");
 //          $form->addSubmit('filter', 'Refresh')
 //                    ->setAttribute('class', 'btn btn-info btn-md');
-            
                     
             
             $form->onSuccess[] = array($this, 'filterBooksSucceeded');
@@ -143,8 +141,8 @@ class BooksPresenter extends BasePresenter
         
         public function filterBooksSucceeded($form, $values) {
             $this->filter = $values;
-//            if ($this->isAjax()) {
-//                $this->redrawControl('details');
-//            }
+            if ($this->isAjax()) {
+                $this->redrawControl('details');
+            }
         }
 }

@@ -1,14 +1,17 @@
-  $(function() {
-    var wrapper = $("#dialog-form");
-    var dialog, form,
+var dialog;
+var wrapper;
+
+$(function() {
+    var wrap = $("#dialog-form");
+    var form,
  
       // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
       emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
       
-      email = wrapper.find( "#email" ),
-      password = wrapper.find( "#password" ),
+      email = wrap.find( "#email" ),
+      password = wrap.find( "#password" ),
       allFields = $( [] ).add( email ).add( password ),
-      tips = wrapper.find( ".validateTips" );
+      tips = wrap.find( ".validateTips" );
  
     function updateTips( t ) {
       tips
@@ -56,11 +59,11 @@
 //          "<td>" + email.val() + "</td>" +
 //          "<td>" + password.val() + "</td>" +
 //        "</tr>" );
-        var submit = wrapper.find("input[type=submit]");
+        var submit = wrap.find("input[type=submit]");
 //        var email = $("#dialog-form #email");
 //        alert($("#dialog-form #email").val());
-        wrapper.find("#email").attr("value", wrapper.find("#email").val());
-        wrapper.find("#password").attr("value", wrapper.find("#password").val());
+        wrap.find("#email").attr("value", wrap.find("#email").val());
+        wrap.find("#password").attr("value", wrap.find("#password").val());
         submit.click();
 //        alert(email);
         dialog.dialog( "close" );
@@ -68,7 +71,7 @@
       return valid;
     }
  
-    dialog = $( wrapper ).dialog({
+    dialog = $( wrap ).dialog({
       autoOpen: false,
       height: 300,
       width: 350,
@@ -86,15 +89,17 @@
     });
  
     form = dialog.find( "form" ).on( "submit", function( event ) {
-//      event.preventDefault();
+      //event.preventDefault();
       addUser();
+      //$(wrapper).find("#submit").click();
     });
+    wrapper = wrap;
 //    alert($("#login-user").children().text().lastIndexOf("Login"));
-    if ($("#login-user").children().text().lastIndexOf("Login") > 0)
-    $( "#login-user").button().on( "click", function() {
-      dialog.dialog( "open" );
-      $(wrapper).parent().css("top", "24%");
-    });
+//    if ($("#login-user").children().text().lastIndexOf("Login") > 0)
+//    $( "#login-user").button().on( "click", function() {
+//      dialog.dialog( "open" );
+//      $(wrapper).parent().css("top", "24%");
+//    });
   });
 
 
@@ -105,27 +110,27 @@
 //    alert(jQuery("span").hasClass("icon-bar"));
 //    $(".navbar-inverse a").addClass("preventDefault");
 //    var allLiInNavBar = $(".navbar-inverse li");
-    $(".navbar-inverse a").on("click", function(event)
-    {
-        $.each($(".navbar-inverse li"), function(key, value)
-        {
-            if ($(value).hasClass("active"))
-                $(value).removeClass("active");
-        });
-        
-        $(this).parent().addClass("active");
-    });
-    
-    $.each($(".preventDefault"), function()
-    {
-        $(this).click(function(event)
-        {
-            event.preventDefault();
-        }
-        );
-    }
-    );
-    
+//    $(".navbar-inverse a").on("click", function(event)
+//    {
+//        $.each($(".navbar-inverse li"), function(key, value)
+//        {
+//            if ($(value).hasClass("active"))
+//                $(value).removeClass("active");
+//        });
+//        
+//        $(this).parent().addClass("active");
+//    });
+//    
+//    $.each($(".preventDefault"), function()
+//    {
+//        $(this).click(function(event)
+//        {
+//            event.preventDefault();
+//        }
+//        );
+//    }
+//    );
+//    
     
 //    return zzz;
 }

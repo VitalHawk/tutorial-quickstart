@@ -54,23 +54,18 @@
         
         <li id="login-user">
             
-            
-        {if isset($_SESSION['user'])}
-            <?php $_SESSION['uri'] = $_SERVER['REQUEST_URI']?>
-            <!-- ?php setcookie("uri", $_SERVER['REQUEST_URI'], time()+5)? -->
-            <!-- ?php $this->container->httpResponse->setCookie("uri", $_SERVER['REQUEST_URI'], time()+5)? -->
-            <!-- ?php echo ($this) ? -->
-            
-            <a href="/Login/Index/" class="ajax">
-                <span class="glyphicon glyphicon-log-out"></span>&nbsp&nbspLogout
-            </a>
-            
-        {else}
-            <a n:href="Sign:form" class="preventDefault ajax">
-                <span class="glyphicon glyphicon-log-in"></span>&nbsp&nbspLogin
-            </a>
-        {/if}
-            
+        {snippet login}
+            {if $user->isLoggedIn()}
+                <a n:href="Sign:out" class="ajax">
+                    <span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout
+                </a>
+            {else}
+                <a n:href="Sign:update" class="ajax">
+                    <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login
+                </a>
+            {/if}
+        {/snippet}
+        {snippet script}{/snippet}
             
         </li>
       </ul>
@@ -91,7 +86,7 @@
         <img src="{$basePath}/images/small.jpg" alt="books" />
     </div>
     </div>
-    <div class="col-sm-8 text-left">
+    <div class="col-sm-10 text-left">
         <h1>Library website</h1>
         
         <?php
@@ -114,12 +109,7 @@
   <p>Footer Text</p>
 </footer>
 
-
-
-
-
-
-
+{include 'Sign/form.latte'}
 	
 
 

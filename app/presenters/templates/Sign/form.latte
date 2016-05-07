@@ -1,7 +1,31 @@
-{snippet login}
-    <div>{$param}</div>
-    <script>
-        alert({$param});
-    </script>
-{/snippet}
+{* Latte template *}
 
+{*block content*}
+{*/block*}
+{*block login*}
+<div id="dialog-form" title="Login" style="overflow: hidden;">
+  <p class="validateTips" style="font-size: 0.7em;">All form fields are required.</p>
+ 
+  <form method="POST" action={link "Sign:login"} >
+    <input type="hidden" name="uri" value="/">
+    <fieldset>
+      <label for="email">Email</label>      
+      <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon3">@</span>
+          <input type="text" name="login" id="email" class="form-control text ui-widget-content ui-corner-all" aria-describedby="sizing-addon3">
+      </div>
+      
+      <br>
+      <label for="password">Password</label>
+      
+      <div class="input-group input-group-sm">
+          <span class="input-group-addon" id="sizing-addon3">**</span>
+          <input type="password" name="password" id="password" class="form-control text ui-widget-content ui-corner-all" aria-describedby="sizing-addon3">
+      </div>
+
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px" class="ajax" >
+    </fieldset>
+    <!-- a n:href='Sign:form' class='ajax' id="submit">___</a -->
+  </form>
+</div>

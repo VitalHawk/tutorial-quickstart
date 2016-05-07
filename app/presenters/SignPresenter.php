@@ -6,6 +6,7 @@ use Nette;
 use App\Forms\SignFormFactory;
 use Tracy\Debugger;
 
+
 class SignPresenter extends BasePresenter
 {
 	/** @var SignFormFactory @inject */
@@ -27,17 +28,42 @@ class SignPresenter extends BasePresenter
 
 	public function actionOut()
 	{
+            if ($this->getUser()->isLoggedIn()) {
 		$this->getUser()->logout();
-		$this->flashMessage('You have been signed out.');
-		$this->redirect('Homepage:');
+		//$this->flashMessage('You have been signed out.');
+            }
+            if ($this->isAjax()) {
+                $this->redrawControl('login');
+            }
 	}
         
-        public function actionForm()
+        public function handleForm()
         {
             if ($this->isAjax()) {
-                $this->template->param = "handleForm xxx";
                 $this->redrawControl('login');
             }
         }
+        
+        public function actionLogin() {
+            $post = $this->getHttpRequest()->getPost();
+            if ($post) {
+                try {
+                    $this->getUser()->login($post['login'], $post['password']);
+                }
+                catch(\Exception $ex) {
+                    Debugger::log($ex);
+                }
 
+                if ($this->isAjax()) {
+                    $this->redrawControl('login');
+                }
+            }
+        }
+        
+        public function actionUpdate()
+        {
+            if ($this->isAjax()) {
+                $this->redrawControl('script');
+            }
+        }
 }
