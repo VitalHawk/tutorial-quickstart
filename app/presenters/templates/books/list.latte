@@ -18,14 +18,14 @@
         
         <tbody>
                 <tr n:foreach='$books as $book'>
-                    <td>{$book->id}</td>
-                    <td>{$book->name}</td>
-                    <td>{$book->category_id}</td>
-                    <td></td>
+                    <td>{$book['id']}</td>
+                    <td>{$book['name']}</td>
+                    <td>{$book['category']}</td>
+                    <td>{$book['author']}</td>
                     
-                    <td>{$book->publisher_id}</td>
-                    <td>{$book->pages}</td>
-                    <td>{$book->date|date:'Y, F j'}</td>
+                    <td>{$book['publisher']}</td>
+                    <td>{$book['pages']}</td>
+                    <td>{$book['date']|date:'Y, F j'}</td>
                     
                 </tr>
         </tbody>

@@ -56,11 +56,11 @@
             
         {snippet login}
             {if $user->isLoggedIn()}
-                <a n:href="Sign:out" class="ajax">
+                <a n:href=":Sign:out" class="ajax">
                     <span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout
                 </a>
             {else}
-                <a n:href="Sign:update" class="ajax">
+                <a n:href=":Sign:update" class="ajax">
                     <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login
                 </a>
             {/if}

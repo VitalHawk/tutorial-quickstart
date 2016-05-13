@@ -28,36 +28,50 @@ class BooksPresenter extends BasePresenter
                 $this->authId = $this->filter["author"];
                 $this->template->test = 'YYYYYY';
                 $this->pubsId = $this->filter["publisher"];
-                
-                $sel = $this->database->table('books');
-                
-                if ($this->catId) {
-                    $sel = $sel->where('category_id', $this->catId);
-                }
-                if ($this->authId) {
-                    $sel = $sel->where(':BooksAuthors.author_id', $this->authId);
-                    
-                }
-                
-                if ($this->pubsId)
-                {
-                    $sel = $sel->where('publisher_id', $this->pubsId);
-                }
-                
-                $books = array();
-                foreach ($sel as $book) {
-//                    $b = new Nette\Utils\ObjectMixin();
-//                    $b->publisher = $book->ref('Publishers', 'publisher_id')->name;
-                    //$book->publisher = 
-                    $books[] = $book;
-                }
-                //$this->template->books = $sel->fetchAll();
-                $this->template->books = $books;
-                
-            } else {
-                $this->template->books = 
-                    $this->database->query('call sp_getAllBooks()')->fetchAll();
             }
+                
+            $sel = $this->database->table('books')
+                    ->group('books.id')
+                    ->select('books.*'
+                            . ', publisher.name publisher, category.name category'
+                            //. ', GROUP_CONCAT(CONCAT(:BooksAuthors.author.surname, " ", :BooksAuthors.author.name)) author'
+                            )
+                    //. ', CONCAT(:BooksAuthors.author.surname, " ", :BooksAuthors.author.name) author'
+                    //->aggregation('GROUP_CONCAT(CONCAT(:BooksAuthors.author.surname, " ", :BooksAuthors.author.name))')
+                    ;
+
+            if ($this->catId) {
+                $sel->where('category_id', $this->catId);
+            }
+            if ($this->authId) {
+                $sel->where(':BooksAuthors.author.id', $this->authId);
+
+            }
+
+            if ($this->pubsId) {
+                $sel->where('publisher_id', $this->pubsId);
+            }
+
+            //Debugger::barDump($sel->getSql());
+            $this->template->books = array();
+            foreach ($sel as $book) {
+                $this->template->books[] = array(
+                    'id' => $book->id,
+                    'name' => $book->name,
+                    'category' => $book->category,
+                    'publisher' => $book->publisher,
+                    'date' => $book->date,
+                    'pages' => $book->pages,
+                    'author' => $this->database->table('books')->where('books.id', $book->id)
+                        ->aggregation('GROUP_CONCAT(CONCAT(:BooksAuthors.author.surname, " ", :BooksAuthors.author.name))')
+                );
+            }            
+
+//        }
+//        else {
+//                $this->template->books = 
+//                    $this->database->query('call sp_getAllBooks()')->fetchAll();
+//            }
         }
         
 	public function renderList() {
@@ -78,7 +92,8 @@ class BooksPresenter extends BasePresenter
                 
             }
             catch(Exception $ex) {
-                echo 'Error!!!' . $ex;
+                Debugger::barDump($ex);
+                Debugger::log($ex);
             }
         }
 
@@ -115,7 +130,7 @@ class BooksPresenter extends BasePresenter
                             ->setPrompt('-- Select publisher --')
                             ->setValue($this->pubsId);
             // $form->setMethod('post');
-            $form->addSubmit('filter', 'Refresh')->getControlPrototype()->addClass("btn btn-info btn-md ajax");
+            $form->addSubmit('filter', 'Refresh')->getControlPrototype()->addClass("btn btn-info btn-md"); // ajax");
 //          $form->addSubmit('filter', 'Refresh')
 //                    ->setAttribute('class', 'btn btn-info btn-md');
                     
