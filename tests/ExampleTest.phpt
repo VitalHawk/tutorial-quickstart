@@ -24,12 +24,14 @@ class ExampleTest extends Tester\TestCase
 	{
 	}
 
-
-	function testSomething()
+        function testSomething()
 	{
 		Assert::true(TRUE);
 	}
-
+        
+        function testSomething2() {
+		Assert::true(TRUE);
+        }
 }
 
 
