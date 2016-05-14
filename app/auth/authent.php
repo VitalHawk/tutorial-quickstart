@@ -28,7 +28,7 @@ class Authent extends Nette\Object implements NS\IAuthenticator {
 
         //return new NS\Identity($row->id, $row->role, array('username' => $row->username));
         return new NS\Identity($row->id,
-                $row->isAdmin ? 'admin' : 'user', 
+                $row->isAdmin ? 'admin' :  'user', 
                 array(
                     'login' => $row->login,
                     'name' => $row->name,
